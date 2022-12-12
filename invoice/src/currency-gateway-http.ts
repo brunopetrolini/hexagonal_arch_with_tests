@@ -1,10 +1,11 @@
-import axios from "axios";
 import { CurrencyGateway } from "./currency-gateway";
+import { HttpClient } from "./http-client";
 
 export class CurrencyGatewayHttp implements CurrencyGateway {
+  constructor(private readonly httpClient: HttpClient, private readonly baseUrl: string) {}
+
   async getCurrencies(): Promise<any> {
-    const currenciesResponse = await axios.get("http://localhost:3001/currencies");
-    const currencies = currenciesResponse.data;
+    const currencies = await this.httpClient.get(`${this.baseUrl}/currencies`);
     return currencies;
   }
 }
