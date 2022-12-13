@@ -5,7 +5,7 @@ import { TransactionDAO } from "./transaction-dao";
 export class CalculateInvoice {
   constructor(private readonly transactionDAO: TransactionDAO, private readonly currencyGateway: CurrencyGateway) {}
 
-  async execute(cardNumber: string): Promise<number> {
+  async execute(cardNumber: string) {
     const currencies = await this.currencyGateway.getCurrencies();
 
     const today = new Date();
@@ -14,7 +14,7 @@ export class CalculateInvoice {
 
     const transactions = await this.transactionDAO.getTransactions(cardNumber, month, year);
     const invoice = new Invoice(transactions, currencies);
-
-    return invoice.getTotal();
+    const total = invoice.getTotal();
+    return { total };
   }
 }
